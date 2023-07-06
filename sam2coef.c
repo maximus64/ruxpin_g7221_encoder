@@ -189,6 +189,11 @@ Word16 samples_to_rmlt_coefs(Word16 *new_samples,Word16 *old_samples,Word16 *coe
     mag_shift=0;
     move16();
 
+    /*
+     * CloudPets libAudio32Encoder.so hardcode this value to 5000
+     */
+    temp1 = 5000;
+
     temp = sub(temp1,14000);
     test();
     if (temp >= 0)

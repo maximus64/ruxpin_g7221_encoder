@@ -178,6 +178,20 @@ void encoder(Word16  number_of_available_bits,
 
 }
 
+static Word16 endianessT(Word16 in)
+{
+    Word16 shift;
+    Word16 out = 0;
+
+    for (shift = 0; shift < 16; shift++)
+    {
+        if ((in >> shift) & 1)
+            out |= (1 << (15 - shift));
+    }
+
+    return out;
+}
+
 /***************************************************************************
  Function:    bits_to_words
 
@@ -261,6 +275,7 @@ void bits_to_words(UWord32 *region_mlt_bits,
             temp = extract_l(L_shr(current_word,j));
             out_word = add(out_word,temp);
 
+            out_word = endianessT(out_word);
             out_words[out_word_index++] = out_word;
             move16();
             
@@ -338,6 +353,7 @@ void bits_to_words(UWord32 *region_mlt_bits,
                     current_word <<= out_word_bits_free;
 
                     current_word_bits_left = sub(current_word_bits_left,out_word_bits_free);
+                    out_word = endianessT(out_word);
                     out_words[out_word_index++] = extract_l(out_word);
                     move16();
 
@@ -404,6 +420,7 @@ void bits_to_words(UWord32 *region_mlt_bits,
         slice = (UWord16)extract_l(acca);
 
         out_word = add(out_word,slice);
+        out_word = endianessT(out_word);
         out_words[out_word_index++] = out_word;
         move16();
 
